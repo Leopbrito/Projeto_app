@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().setTitle("Wallet");
+
         //abertura e/ou criação do banco de dados
         db = openOrCreateDatabase(Banco.banco(), MODE_PRIVATE, null);
 

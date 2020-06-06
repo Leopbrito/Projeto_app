@@ -1,6 +1,8 @@
 package com.example.app_finance.CRUD;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.app_finance.R;
 import com.example.app_finance.pojo.Transaction;
+import com.example.app_finance.utils.Banco;
 
 public class Editar extends AppCompatActivity {
 
@@ -19,6 +22,8 @@ public class Editar extends AppCompatActivity {
     EditText name, value, category, date;
     Spinner type;
     Button btEdit, btDelete;
+
+    SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,7 @@ public class Editar extends AppCompatActivity {
 
         final Transaction transaction = (Transaction) itTransaction.getExtras().getSerializable("transacao");
 
-        int id = transaction.getId();
+        final int id = transaction.getId();
         name.setText(transaction.getName());
         value.setText(String.valueOf(transaction.getValue()));
         category.setText(transaction.getCategory());
@@ -53,6 +58,24 @@ public class Editar extends AppCompatActivity {
         btEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                db = openOrCreateDatabase(
+                        Banco.banco(),
+                        Context.MODE_PRIVATE,
+                        null
+                );
+
+                db.execSQL(
+                        "UPDATE " + Banco.tabela() + " SET " +
+                                "name='" + name.getText() + "', " +
+                                "value='" + value.getText() + "', " +
+                                "category='" + category.getText() + "', " +
+                                "type='" + type.getSelectedItem() + "', " +
+                                "date='" + date.getText() + "' " +
+                                "WHERE id=" + id
+                );
+
+                finish();
 
             }
         });

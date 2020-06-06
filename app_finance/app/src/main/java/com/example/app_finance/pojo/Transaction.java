@@ -79,6 +79,4 @@ public class Transaction implements Serializable {
         this.date = date;
     }
 
-    // METODOS
-
 }
