@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         // configurar o adpatador
-
         adaptador = new ArrayAdapter<>(
                 getApplicationContext(),
                 android.R.layout.simple_list_item_1,

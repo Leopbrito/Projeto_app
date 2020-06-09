@@ -84,6 +84,16 @@ public class Editar extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                db = openOrCreateDatabase(
+                        Banco.banco(),
+                        Context.MODE_PRIVATE,
+                        null
+                );
+
+                db.execSQL("DELETE FROM " + Banco.tabela() + " WHERE id=" + id);
+
+                finish();
+
             }
         });
 
