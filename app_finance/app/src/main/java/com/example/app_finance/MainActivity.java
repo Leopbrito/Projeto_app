@@ -15,6 +15,7 @@ import com.example.app_finance.CRUD.Editar;
 import com.example.app_finance.CRUD.Novo;
 import com.example.app_finance.pojo.Transaction;
 import com.example.app_finance.utils.Banco;
+import com.github.mikephil.charting.charts.PieChart;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Grafico
+
+        PieChart
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
                 new DataPoint(1, 1),
                 new DataPoint(2, 5)
