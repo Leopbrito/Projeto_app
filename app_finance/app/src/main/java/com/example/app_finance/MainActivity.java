@@ -16,6 +16,10 @@ import com.example.app_finance.CRUD.Novo;
 import com.example.app_finance.pojo.Transaction;
 import com.example.app_finance.utils.Banco;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
@@ -23,15 +27,24 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     // Declaração das variaveis dos objetos da VIEW
     FloatingActionButton floatBtAdd;
-    GraphView graph;
+   // GraphView graph;
     ListView lvTransaction;
     ArrayList<Transaction> transactions = new ArrayList<>();
     ArrayAdapter<Transaction> adaptador;
+
+    /**grafico**/
+    PieChart grafico;
+
+    /**Array float, sera responsavel por definir a % de cada item do grafico**/
+    float itensGrafico[] = {96.6f, 56.8f, 35.6f, 45.7f, 10.5f};
+    /** Array de String, Sera responsavel  por  definir o  nome de cada item  do nosso grafico**/
+     String descricao[] ={"Item Um", "Item Dois", "Item Tres", "Item Quatro", "Item Cinco"};
 
     // Declaração da variavel para acessar o banco
     SQLiteDatabase db;
@@ -52,8 +65,25 @@ public class MainActivity extends AppCompatActivity {
 
         // Atribuição das variaveis com os respectivos ID dos objetos da VIEW
         floatBtAdd = findViewById(R.id.floatBtAdd);
-        graph = findViewById(R.id.graph);
-        lvTransaction = findViewById(R.id.lvTransaction_main);
+        //graph = findViewById(R.id.graph);
+        grafico = (PieChart) findViewById(R.id.graficoID);
+        /**Criamos uma list  do tipo <PieChart>**/
+        List<PieChart> entradasGrafico = new ArrayList<>();
+        /**Preenchendo o grafico**/
+        for (int i =0; i < itensGrafico.length; i ++) {
+            entradasGrafico.add(new PieEntry(itensGrafico[i],descricao[i]));
+        }
+        PieDataSet dataSet= new PieDataSet(entradasGrafico,"Legenda do grafico");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        PieData pieData = new PieData(dataSet);
+
+        grafico.setData(pieData);
+
+        grafico.invalidate();
+
+        }
+        //lvTransaction = findViewById(R.id.lvTransaction_main);
 
         // Botão FLutuante
         floatBtAdd.setOnClickListener(new View.OnClickListener() {
@@ -68,12 +98,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Grafico
 
-        PieChart
+
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
                 new DataPoint(1, 1),
                 new DataPoint(2, 5)
         });
-        graph.addSeries(series);
+        grafico.addSeries(series);
 
 
         //popular a lista (List View)
