@@ -98,9 +98,8 @@ public class MainActivity extends AppCompatActivity {
         pieDataSet.setColors(colorClassArray);
 
         PieData pieData = new PieData(pieDataSet);
-        
+
         pieChart.setDrawEntryLabels(false);
-        pieChart.setUsePercentValues(true);
         pieChart.setData(pieData);
         pieChart.invalidate();
 
