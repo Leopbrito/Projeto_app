@@ -79,5 +79,5 @@ public class Transaction implements Serializable {
         this.date = date;
     }
 
-    public String toString(){return name + " R$" + value ;}
+    public String toString(){return name + " R$" + value + "\n" + type;}
 }

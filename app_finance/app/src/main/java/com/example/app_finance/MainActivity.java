@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,11 +17,12 @@ import com.example.app_finance.CRUD.Novo;
 import com.example.app_finance.pojo.Transaction;
 import com.example.app_finance.utils.Banco;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
+
+
 
 import java.util.ArrayList;
 
@@ -28,13 +30,24 @@ public class MainActivity extends AppCompatActivity {
 
     // Declaração das variaveis dos objetos da VIEW
     FloatingActionButton floatBtAdd;
-    GraphView graph;
+    PieChart pieChart;
     ListView lvTransaction;
     ArrayList<Transaction> transactions = new ArrayList<>();
     ArrayAdapter<Transaction> adaptador;
 
+    ArrayList<PieEntry> dataValues(){
+        ArrayList<PieEntry> dataVals = new ArrayList<PieEntry>();
+        dataVals.add(new PieEntry(renda,"Renda"));
+        dataVals.add(new PieEntry(despesa,"Despesa"));
+        return dataVals;
+    }
+
+    float renda, despesa;
+    int[] colorClassArray = new int[]{Color.GREEN,Color.RED};
+
     // Declaração da variavel para acessar o banco
     SQLiteDatabase db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +63,22 @@ public class MainActivity extends AppCompatActivity {
         db.execSQL(Banco.criaTabela());
 
 
+        Cursor cursorRenda = db.rawQuery("SELECT value FROM " + Banco.tabela() + " WHERE type='Renda'",null);
+
+        while (cursorRenda.moveToNext()){
+            renda += cursorRenda.getFloat(0);
+        }
+
+        Cursor cursorDespesa = db.rawQuery("SELECT value FROM " + Banco.tabela() + " WHERE type='Despesa'",null);
+
+        while (cursorDespesa.moveToNext()){
+            despesa += cursorDespesa.getFloat(0);
+        }
+
+
         // Atribuição das variaveis com os respectivos ID dos objetos da VIEW
         floatBtAdd = findViewById(R.id.floatBtAdd);
-        graph = findViewById(R.id.graph);
+        pieChart = findViewById(R.id.pieChart);
         lvTransaction = findViewById(R.id.lvTransaction_main);
 
         // Botão FLutuante
@@ -68,12 +94,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Grafico
 
-        PieChart
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
-                new DataPoint(1, 1),
-                new DataPoint(2, 5)
-        });
-        graph.addSeries(series);
+        PieDataSet pieDataSet = new PieDataSet(dataValues(),"");
+        pieDataSet.setColors(colorClassArray);
+
+        PieData pieData = new PieData(pieDataSet);
+
+        pieChart.setData(pieData);
+        pieChart.invalidate();
 
 
         //popular a lista (List View)
