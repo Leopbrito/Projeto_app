@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Grafico
 
-        PieDataSet pieDataSet = new PieDataSet(dataValues(),"");
+        PieDataSet pieDataSet = new PieDataSet(dataValues(),null);
         pieDataSet.setColors(colorClassArray);
 
         PieData pieData = new PieData(pieDataSet);
@@ -103,8 +103,6 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setData(pieData);
         pieChart.invalidate();
 
-
-        //popular a lista (List View)
         //Limpar a listar
         transactions.clear();
 
